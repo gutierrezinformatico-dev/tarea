@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,14 +10,18 @@
     <button onclick="nombre()">Mostrar el nombre</button>
     <script>
         async function nombre() {
-            const resp = await fetch('servicio.php');
-            if (resp.ok) {
-                const texto =
-                    await resp.text()
-                alert(texto)
-            } else {
-                throw new Error(
-                    resp.statusText)
+            try {
+                const resp = await fetch('servicio.php');
+                if (resp.ok) {
+                    const texto =
+                        await resp.text()
+                    alert(texto)
+                } else {
+                    throw new Error(
+                        resp.statusText)
+                }
+            } catch (error) {
+                alert("Ocurrió un error: " + error.message);
             }
         }
     </script>
