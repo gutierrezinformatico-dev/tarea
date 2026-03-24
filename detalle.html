@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+ <title>Detalle del juego</title>
+
+ <link rel="stylesheet" href="css/stilos.css">
+</head>
+<body>
+
+<header>
+ <h1>Detalle del juego</h1>
+ <div>
+  <a href="index.html">Inicio</a>
+ </div>
+</header>
+
+<div class="contenedor" id="detalle"></div>
+
+<script type="module">
+
+import { consume } from "./js/lib/consume.js"
+import { recibeJson } from "./js/lib/recibeJson.js"
+import { muestraError } from "./js/lib/muestraError.js"
+
+const params = new URLSearchParams(location.search)
+const id = params.get("id")
+
+cargar()
+
+async function cargar() {
+ try {
+
+  const respuesta =
+   await consume(recibeJson("php/detalle.php?id=" + id))
+
+  const juego = await respuesta.json()
+
+  detalle.innerHTML = `
+   <div class="card">
+    <img src="${juego.imagen}">
+    <h2>${juego.nombre}</h2>
+    <p><b>Género:</b> ${juego.genero}</p>
+    <p>${juego.descripcion}</p>
+   </div>
+  `
+
+ } catch (e) {
+  muestraError(e)
+ }
+}
+
+</script>
+
+</body>
+</html>

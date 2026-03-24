@@ -1,29 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicio</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+ <title>Tienda de videojuegos</title>
+
+ <link rel="stylesheet" href="css/stilos.css">
 </head>
 <body>
-    <h1>Bienvenido al ejemplo de servicio</h1>
-    <button onclick="nombre()">Mostrar el nombre</button>
-    <script>
-        async function nombre() {
-            try {
-                const resp = await fetch('servicio.php');
-                if (resp.ok) {
-                    const texto =
-                        await resp.text()
-                    alert(texto)
-                } else {
-                    throw new Error(
-                        resp.statusText)
-                }
-            } catch (error) {
-                alert("Ocurrió un error: " + error.message);
-            }
-        }
-    </script>
+
+<header>
+ <h1>🎮 GameStore</h1>
+ <div>
+  <a href="agregar.html">Agregar</a>
+ </div>
+</header>
+
+<div class="contenedor">
+
+ <div id="lista" class="grid"></div>
+
+</div>
+
+<script type="module">
+
+import { consume } from "./js/lib/consume.js"
+import { recibeJson } from "./js/lib/recibeJson.js"
+import { muestraError } from "./js/lib/muestraError.js"
+
+// 🔥 CARGA AUTOMÁTICA
+window.addEventListener("load", cargar)
+
+async function cargar() {
+ try {
+
+  const respuesta =
+   await consume(recibeJson("php/lista.php"))
+
+  const json = await respuesta.json()
+
+  lista.innerHTML = ""
+
+  if (json.length === 0) {
+   lista.innerHTML = "<p>No hay juegos aún</p>"
+   return
+  }
+
+  json.forEach(j => {
+
+   lista.innerHTML += `
+   <div class="card" onclick="ver(${j.id})">
+    <img src="${j.imagen || 'img/default.jpg'}">
+    <h3>${j.nombre}</h3>
+    <p>${j.genero}</p>
+
+    <button onclick="eliminar(event, ${j.id})">Eliminar</button>
+
+   </div>
+   `
+  })
+
+ } catch (e) {
+  muestraError(e)
+ }
+}
+
+// 🔥 CLICK PARA IR A DETALLE
+window.ver = function(id) {
+ location.href = "detalle.html?id=" + id
+}
+
+// 🔥 ELIMINAR CON ANIMACIÓN
+window.eliminar = async function(e, id) {
+
+ e.stopPropagation()
+
+ if (!confirm("¿Eliminar este juego?")) return
+
+ try {
+
+  const card = e.target.closest(".card")
+
+  card.classList.add("eliminando")
+
+  setTimeout(async () => {
+
+   const respuesta = await fetch(
+    "php/eliminar.php?id=" + id
+   )
+
+   if (respuesta.ok) {
+    card.remove()
+   } else {
+    throw new Error("Error al eliminar")
+   }
+
+  }, 500)
+
+ } catch (err) {
+  muestraError(err)
+ }
+
+}
+
+</script>
+
 </body>
 </html>

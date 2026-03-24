@@ -1,0 +1,118 @@
+/* ====== BODY ====== */
+body {
+ margin: 0;
+ font-family: Arial, Helvetica, sans-serif;
+ background: #1b2838;
+ color: white;
+}
+
+/* ====== NAVBAR ====== */
+header {
+ background: #171a21;
+ padding: 15px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+
+header h1 {
+ margin: 0;
+ font-size: 22px;
+}
+
+header a {
+ color: #66c0f4;
+ text-decoration: none;
+ margin-left: 15px;
+}
+
+/* ====== CONTENIDO ====== */
+.contenedor {
+ padding: 20px;
+}
+
+/* ====== BOTON ====== */
+button {
+ background: #66c0f4;
+ border: none;
+ padding: 10px 15px;
+ color: black;
+ cursor: pointer;
+ border-radius: 5px;
+}
+
+/* ====== GRID DE JUEGOS ====== */
+.grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+ gap: 20px;
+ margin-top: 20px;
+}
+
+/* ====== TARJETA ====== */
+.card {
+ background: #2a475e;
+ border-radius: 10px;
+ overflow: hidden;
+ transition: 0.3s;
+}
+
+.card:hover {
+ transform: scale(1.05);
+}
+
+/* ====== IMAGEN ====== */
+.card img {
+ width: 100%;
+ height: auto;        /* Mantiene proporción */
+ max-height: 400px;   /* Limita tamaño máximo */
+ object-fit: contain;  /* Ajusta imagen sin recortar */
+ border-radius: 5px;   /* Bordes suaves opcionales */
+}
+
+/* ====== TEXTO ====== */
+.card h3 {
+ margin: 10px;
+}
+
+.card p {
+ margin: 10px;
+ color: #c7d5e0;
+}
+
+/* ====== FORM ====== */
+form {
+ max-width: 300px;
+ margin: auto;
+ display: flex;
+ flex-direction: column;
+}
+
+input {
+ margin-bottom: 10px;
+ padding: 10px;
+ border: none;
+ border-radius: 5px;
+}
+
+/* 🔥 ANIMACIÓN ELIMINAR */
+.card.eliminando {
+ opacity: 0;
+ transform: translateX(100px);
+ transition: all 0.5s ease;
+}
+
+/* ====== MEDIA QUERY PARA MÓVILES ====== */
+@media (max-width: 500px) {
+ .contenedor {
+     padding: 10px;
+ }
+
+ .card img {
+     max-height: 250px;
+ }
+ 
+ .card {
+     border-radius: 8px;
+ }
+}

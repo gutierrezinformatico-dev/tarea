@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+ <title>Agregar videojuego</title>
+
+ <link rel="stylesheet" href="css/stilos.css">
+</head>
+<body>
+
+<header>
+ <h1>Agregar videojuego</h1>
+</header>
+
+<div class="contenedor">
+
+ <form id="formulario">
+
+  <input name="nombre" placeholder="Nombre">
+  <input name="genero" placeholder="Genero">
+
+  <textarea name="descripcion" placeholder="Descripción"></textarea>
+
+  <!-- 🔥 NUEVO: URL DE IMAGEN -->
+  <input name="imagen" placeholder="URL de la imagen">
+
+  <button>Guardar</button>
+
+ </form>
+
+</div>
+
+<script type="module">
+
+import { muestraError } from "./js/lib/muestraError.js"
+
+formulario.addEventListener("submit", guardar)
+
+async function guardar(e) {
+ e.preventDefault()
+
+ try {
+
+  const datos = new FormData(formulario)
+
+  const respuesta = await fetch(
+   "php/agregar.php",
+   {
+    method: "POST",
+    body: datos
+   }
+  )
+
+  if (respuesta.ok) {
+   alert("Guardado")
+   formulario.reset()
+   location.href = "index.html"
+  } else {
+   throw new Error(respuesta.statusText)
+  }
+
+ } catch (e) {
+  muestraError(e)
+ }
+
+}
+
+</script>
+
+</body>
+</html>
